@@ -1,0 +1,52 @@
+import telegram
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
+# Замість 'TOKEN' вставте свій токен доступу, отриманий від BotFather
+TOKEN = 'YOUR_TOKEN'
+
+# Функція для обробки команди /start
+def start(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Вітаю! Ласкаво просимо в онлайн вейпшоп!")
+
+# Функція для обробки повідомлень замовлення
+def order(update, context):
+    message = "Дякуємо за ваше замовлення!\n\nВаше замовлення:\n"
+    
+    # Отримання тексту повідомлення замовлення
+    order_text = update.message.text
+    
+    # Додавання тексту замовлення до повідомлення
+    message += order_text
+    
+    # Відправка підтвердження замовлення
+    context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+
+# Функція для обробки невідомих команд або повідомлень
+def unknown(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Вибачте, я не розумію цю команду.")
+
+def main():
+    # Створення об'єкту бота
+    bot = telegram.Bot(token=TOKEN)
+    
+    # Створення оновлювача (updater)
+    updater = Updater(bot=bot, use_context=True)
+    
+    # Отримання диспетчера (dispatcher)
+    dispatcher = updater.dispatcher
+    
+    # Додавання обробників команд та повідомлень
+    start_handler = CommandHandler('start', start)
+    order_handler = MessageHandler(Filters.text & (~Filters.command), order)
+    unknown_handler = MessageHandler(Filters.command, unknown)
+    
+    dispatcher.add_handler(start_handler)
+    dispatcher.add_handler(order_handler)
+    dispatcher.add_handler(unknown_handler)
+    
+    # Запуск бота
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
