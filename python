@@ -2,7 +2,7 @@ import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Замість 'TOKEN' вставте свій токен доступу, отриманий від BotFather
-TOKEN = 'YOUR_TOKEN'
+TOKEN = '6039228469:AAE-SR6yRDgF3iVSCwgnbQgncM4S8QZkDRY'
 
 # Функція для обробки команди /start
 def start(update, context):
